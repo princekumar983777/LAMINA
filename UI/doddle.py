@@ -132,7 +132,8 @@ class Robo(QWidget):
         self.speaker.speak(reply_text)
         self.stop_talking()
         print("Time Taken for speech genearting ", time.time() - start) 
-
+        if task :
+            pass # we use a task handler to begin a task and put a valid status to that task 
     def start_talking(self):
         self.is_talking = True
         QApplication.processEvents() 
