@@ -9,7 +9,7 @@ from UI.Mthread import ModelLoader
 import json
 import time 
 
-
+from TaskBase.TaskManager import TaskManager
 
 
 
@@ -51,6 +51,7 @@ class Robo(QWidget):
 
         self.is_recording = False 
 
+        self.Taskmanager = TaskManager()   #Task Manger 
 
         # Set label for holding image
         self.label = QLabel(self)
@@ -127,13 +128,19 @@ class Robo(QWidget):
         params = response.get("param", {})
         self.stop_thinking()
 
+        if task and params is not None:
+            try:
+                self.Taskmanager.create_task(task, params)
+                print(f"Task '{task}' created with parameters: {params}")
+            except Exception as e:
+                print(f"Failed to create task '{task}': {e}")
+
         start = time.time()
         self.start_talking()
         self.speaker.speak(reply_text)
         self.stop_talking()
         print("Time Taken for speech genearting ", time.time() - start) 
-        if task :
-            pass # we use a task handler to begin a task and put a valid status to that task 
+        
     def start_talking(self):
         self.is_talking = True
         QApplication.processEvents() 
